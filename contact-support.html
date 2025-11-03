@@ -1,171 +1,201 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Support | AmoraLise</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: #fefcfb;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: #f94f2f;
-      color: white;
-      padding: 15px 20px;
-      font-size: 1.2rem;
-      font-weight: 600;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    header a {
-      color: white;
-      text-decoration: none;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    header a:hover { opacity: 0.8; }
-    .chat-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      max-width: 600px;
-      width: 90%;
-      margin: 20px auto;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-    .messages {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      background: #fafafa;
-    }
-    .message {
-      max-width: 70%;
-      padding: 10px 15px;
-      border-radius: 18px;
-      word-wrap: break-word;
-      font-size: 0.95rem;
-      line-height: 1.4;
-      position: relative;
-    }
-    .message.customer {
-      align-self: flex-end;
-      background: #f94f2f;
-      color: white;
-      border-bottom-right-radius: 4px;
-    }
-    .message.admin {
-      align-self: flex-start;
-      background: #f1f1f1;
-      color: #333;
-      border-bottom-left-radius: 4px;
-    }
-    .form {
-      display: flex;
-      padding: 10px;
-      border-top: 1px solid #eee;
-      background: white;
-      gap: 10px;
-    }
-    input, button {
-      font-family: inherit;
-      border-radius: 20px;
-      border: 1px solid #ddd;
-      font-size: 0.95rem;
-    }
-    input {
-      flex: 1;
-      padding: 10px 15px;
-      outline: none;
-      background: #f9f9f9;
-    }
-    button {
-      background: #f94f2f;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      transition: 0.3s;
-      font-weight: 600;
-    }
-    button:hover { background: #ff7043; }
-    .user-info {
-      padding: 10px 15px;
-      background: #fff8f6;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .user-info input {
-      border: 1px solid #ddd;
-      padding: 8px 12px;
-      border-radius: 8px;
-      width: 100%;
-      font-size: 0.9rem;
-    }
-    .message.admin {
-  align-self: flex-start;
-  background: #e0e0e0; /* softer gray for incoming messages */
-  color: #333;
-  border-bottom-left-radius: 18px;
-  border-top-right-radius: 18px;
-  padding: 10px 15px;
-  max-width: 70%;
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #fff8f0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #345523;
+  color: white;
+  padding: 16px 24px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+header a:hover {
+  opacity: 0.9;
+}
+
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: 95%;
+  margin: 20px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  overflow: hidden;
+  height: 80vh;
+}
+
+.user-info {
+  padding: 16px 20px;
+  background: #fff3e0;
+  border-bottom: 1px solid #f0d9c5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-info input {
+  border: 1px solid #f0d9c5;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  outline: none;
+  background: #fff;
+}
+
+.user-info input:focus {
+  border-color: #556133;
+  box-shadow: 0 0 6px rgba(245,61,45,0.2);
+}
+
+.messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fff8f0;
+  scrollbar-width: thin;
+  scrollbar-color: #176329 #f0f0f0;
+}
+
+.messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background: #27732f;
+  border-radius: 10px;
+  border: 2px solid #f0f0f0;
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+  background: #27732f;
+}
+
+.message {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  word-wrap: break-word;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .message.customer {
   align-self: flex-end;
-  background: #f94f2f; /* your messages */
+  background:#27732f;
   color: white;
-  border-bottom-right-radius: 18px;
-  border-top-left-radius: 18px;
-  padding: 10px 15px;
-  max-width: 70%;
+  border-bottom-right-radius: 4px;
+  border-top-left-radius: 16px;
 }
-/* Receiver box additional styling */
+
 .message.admin {
   align-self: flex-start;
-  background: #e0e0e0;      /* softer gray for incoming messages */
+  background: #f0f0f0;
   color: #333;
-  border-bottom-left-radius: 18px;
-  border-top-right-radius: 18px;
-  padding: 10px 15px;
-  max-width: 70%;
-  position: relative;
+  border-bottom-left-radius: 4px;
+  border-top-right-radius: 16px;
 }
 
-/* Optional: add a little left side accent bar */
-.message.admin::before {
-  content: "";
-  position: absolute;
-  left: -6px;
-  top: 0;
+.message-time {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.form {
+  display: flex;
+  padding: 12px 16px;
+  border-top: 1px solid #eee;
+  background: #fff;
+  gap: 10px;
+  position: sticky;
   bottom: 0;
-  width: 4px;
-  background: #f94f2f;       /* accent color (same as customer box) */
-  border-top-left-radius: 18px;
-  border-bottom-left-radius: 18px;
 }
 
+input#messageInput {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+input#messageInput:focus {
+  border-color: #27732f;
+  box-shadow: 0 0 6px rgba(245,61,45,0.2);
+}
+
+button {
+  background: #27732f;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background: #d93220;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 480px) {
+  .chat-container { width: 95%; }
+  .message { max-width: 80%; }
+}
 
   </style>
 </head>
@@ -178,482 +208,102 @@
 
   <div class="chat-container">
     <div class="user-info">
-      <input type="text" id="name" placeholder="Your Name" required>
-      <input type="email" id="email" placeholder="Your Email" required>
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email" required />
     </div>
 
     <div class="messages" id="messages"></div>
 
     <form class="form" id="messageForm">
-      <input type="text" id="messageInput" placeholder="Type your message..." required>
+      <input type="text" id="messageInput" placeholder="Type a message..." required />
       <button type="submit">Send</button>
     </form>
   </div>
 
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script>
-const socket = io("http://localhost:3000");
-const messagesDiv = document.getElementById("messages");
-const form = document.getElementById("messageForm");
-const input = document.getElementById("messageInput");
-const nameInput = document.getElementById("name");
-const emailInput = document.getElementById("email");
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io("http://localhost:3000");
+    const messagesDiv = document.getElementById("messages");
+    const form = document.getElementById("messageForm");
+    const input = document.getElementById("messageInput");
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
 
-let userEmail = null;
-let userName = null;
+    let userName = null;
+    let userEmail = null;
+    let allMessages = JSON.parse(localStorage.getItem("chatMessages") || "[]");
 
-// Load logged-in user
-const loggedInCustomer = localStorage.getItem('loggedInCustomer');
-if (loggedInCustomer) {
-  const customer = JSON.parse(loggedInCustomer);
-  nameInput.value = customer.firstName + " " + customer.lastName;
-  emailInput.value = customer.email;
-  nameInput.readOnly = true;
-  emailInput.readOnly = true;
-
-  userEmail = customer.email;
-  userName = customer.firstName + " " + customer.lastName;
-
-  socket.emit("registerUser", { name: userName, email: userEmail });
-}
-
-// Load previous messages from localStorage
-let allMessages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-renderMessages();
-
-// Send message
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const message = input.value.trim();
-  if (!message) return;
-
-  const now = new Date();
-  const msgData = {
-    name: userName,
-    email: userEmail,
-    message,
-    sender: "customer",
-    time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    date: now.toLocaleDateString()
-  };
-
-  socket.emit("sendMessage", msgData);
-  allMessages.push(msgData);
-  saveMessages();
-  renderMessages();
-  input.value = "";
-});
-
-// Receive reply
-socket.on("receiveReply", (msg) => {
-  if (msg.email === userEmail) {
-    allMessages.push(msg);
-    saveMessages();
-    renderMessages();
-  }
-});
-
-// Save messages to localStorage
-function saveMessages() {
-  localStorage.setItem("chatMessages", JSON.stringify(allMessages));
-}
-
-// Render all messages with delete buttons
-function renderMessages() {
-  messagesDiv.innerHTML = "";
-  allMessages.forEach((msg, index) => {
-    if (msg.email !== userEmail) return; // show only current user's messages
-
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("message", msg.sender === "admin" ? "admin" : "customer");
-
-    const text = document.createElement("div");
-    text.textContent = msg.message;
-
-    const time = document.createElement("div");
-    time.style.fontSize = "0.75rem";
-    time.style.opacity = "0.7";
-    time.style.marginTop = "4px";
-    time.textContent = `${msg.date || ""} • ${msg.time || ""}`;
-
-    // Delete button
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "×";
-    deleteBtn.style.cssText = `
-      margin-left: 8px;
-      background: transparent;
-      border: none;
-      color: red;
-      font-weight: bold;
-      cursor: pointer;
-    `;
-    deleteBtn.onclick = () => deleteMessage(index);
-
-    text.appendChild(deleteBtn);
-    wrapper.appendChild(text);
-    wrapper.appendChild(time);
-    messagesDiv.appendChild(wrapper);
-  });
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-// Delete message both sides
-function deleteMessage(index) {
-  allMessages.splice(index, 1);
-  saveMessages();
-  renderMessages();
-
-  // Optional: notify server to remove message for admin side
-  socket.emit("deleteMessage", { index, email: userEmail });
-}
-
-// Load past messages from server (optional)
-socket.on("connect", () => {
-  socket.emit("loadMessages");
-});
-
-socket.on("loadMessages", (msgs) => {
-  msgs.forEach(msg => {
-    if (msg.email === userEmail && !allMessages.some(m => m.time === msg.time && m.date === msg.date && m.message === msg.message)) {
-      allMessages.push(msg);
+    const loggedInCustomer = localStorage.getItem("loggedInCustomer");
+    if (loggedInCustomer) {
+      const c = JSON.parse(loggedInCustomer);
+      nameInput.value = c.firstName + " " + c.lastName;
+      emailInput.value = c.email;
+      nameInput.readOnly = true;
+      emailInput.readOnly = true;
+      userName = nameInput.value;
+      userEmail = emailInput.value;
+      socket.emit("registerUser", { name: userName, email: userEmail });
     }
-  });
-  saveMessages();
-  renderMessages();
-});
-</script>
 
+    renderMessages();
 
+    socket.on("connect", () => {
+      socket.emit("loadMessages");
+    });
 
+    socket.on("loadMessages", (msgs) => {
+      allMessages = msgs.filter(m => m.email === userEmail);
+      saveMessages();
+      renderMessages();
+    });
+
+    socket.on("receiveReply", (msg) => {
+      if (msg.email === userEmail) {
+        allMessages.push(msg);
+        saveMessages();
+        renderMessages();
+      }
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const message = input.value.trim();
+      if (!message) return;
+      const now = new Date();
+      const msgData = {
+        name: userName,
+        email: userEmail,
+        message,
+        sender: "customer",
+        date: now.toLocaleDateString(),
+        time: now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      };
+      socket.emit("sendMessage", msgData);
+      allMessages.push(msgData);
+      saveMessages();
+      renderMessages();
+      input.value = "";
+    });
+
+    function renderMessages() {
+      messagesDiv.innerHTML = "";
+      allMessages.forEach(msg => {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("message", msg.sender === "admin" ? "admin" : "customer");
+        wrapper.innerHTML = `
+          <div>${msg.message}</div>
+          <div class="message-time">${msg.date || ""} • ${msg.time || ""}</div>
+        `;
+        messagesDiv.appendChild(wrapper);
+      });
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function saveMessages() {
+      localStorage.setItem("chatMessages", JSON.stringify(allMessages));
+    }
+    
+    
+  </script>
 </body>
 </html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Support | AmoraLise</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: #fefcfb;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: #f94f2f;
-      color: white;
-      padding: 15px 20px;
-      font-size: 1.2rem;
-      font-weight: 600;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    header a {
-      color: white;
-      text-decoration: none;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    header a:hover { opacity: 0.8; }
-    .chat-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      max-width: 600px;
-      width: 90%;
-      margin: 20px auto;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-    .messages {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      background: #fafafa;
-    }
-    .message {
-      max-width: 70%;
-      padding: 10px 15px;
-      border-radius: 18px;
-      word-wrap: break-word;
-      font-size: 0.95rem;
-      line-height: 1.4;
-      position: relative;
-    }
-    .message.customer {
-      align-self: flex-end;
-      background: #f94f2f;
-      color: white;
-      border-bottom-right-radius: 4px;
-    }
-    .message.admin {
-      align-self: flex-start;
-      background: #f1f1f1;
-      color: #333;
-      border-bottom-left-radius: 4px;
-    }
-    .form {
-      display: flex;
-      padding: 10px;
-      border-top: 1px solid #eee;
-      background: white;
-      gap: 10px;
-    }
-    input, button {
-      font-family: inherit;
-      border-radius: 20px;
-      border: 1px solid #ddd;
-      font-size: 0.95rem;
-    }
-    input {
-      flex: 1;
-      padding: 10px 15px;
-      outline: none;
-      background: #f9f9f9;
-    }
-    button {
-      background: #f94f2f;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      transition: 0.3s;
-      font-weight: 600;
-    }
-    button:hover { background: #ff7043; }
-    .user-info {
-      padding: 10px 15px;
-      background: #fff8f6;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .user-info input {
-      border: 1px solid #ddd;
-      padding: 8px 12px;
-      border-radius: 8px;
-      width: 100%;
-      font-size: 0.9rem;
-    }
-    .message.admin {
-  align-self: flex-start;
-  background: #e0e0e0; /* softer gray for incoming messages */
-  color: #333;
-  border-bottom-left-radius: 18px;
-  border-top-right-radius: 18px;
-  padding: 10px 15px;
-  max-width: 70%;
-}
-
-.message.customer {
-  align-self: flex-end;
-  background: #f94f2f; /* your messages */
-  color: white;
-  border-bottom-right-radius: 18px;
-  border-top-left-radius: 18px;
-  padding: 10px 15px;
-  max-width: 70%;
-}
-/* Receiver box additional styling */
-.message.admin {
-  align-self: flex-start;
-  background: #e0e0e0;      /* softer gray for incoming messages */
-  color: #333;
-  border-bottom-left-radius: 18px;
-  border-top-right-radius: 18px;
-  padding: 10px 15px;
-  max-width: 70%;
-  position: relative;
-}
-
-/* Optional: add a little left side accent bar */
-.message.admin::before {
-  content: "";
-  position: absolute;
-  left: -6px;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background: #f94f2f;       /* accent color (same as customer box) */
-  border-top-left-radius: 18px;
-  border-bottom-left-radius: 18px;
-}
-
-
-  </style>
-</head>
-<body>
-  <header>
-    <a href="product.html">← Back</a>
-    <span>Contact Support</span>
-    <span></span>
-  </header>
-
-  <div class="chat-container">
-    <div class="user-info">
-      <input type="text" id="name" placeholder="Your Name" required>
-      <input type="email" id="email" placeholder="Your Email" required>
-    </div>
-
-    <div class="messages" id="messages"></div>
-
-    <form class="form" id="messageForm">
-      <input type="text" id="messageInput" placeholder="Type your message..." required>
-      <button type="submit">Send</button>
-    </form>
-  </div>
-
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script>
-const socket = io("http://localhost:3000");
-const messagesDiv = document.getElementById("messages");
-const form = document.getElementById("messageForm");
-const input = document.getElementById("messageInput");
-const nameInput = document.getElementById("name");
-const emailInput = document.getElementById("email");
-
-let userEmail = null;
-let userName = null;
-
-// Load logged-in user
-const loggedInCustomer = localStorage.getItem('loggedInCustomer');
-if (loggedInCustomer) {
-  const customer = JSON.parse(loggedInCustomer);
-  nameInput.value = customer.firstName + " " + customer.lastName;
-  emailInput.value = customer.email;
-  nameInput.readOnly = true;
-  emailInput.readOnly = true;
-
-  userEmail = customer.email;
-  userName = customer.firstName + " " + customer.lastName;
-
-  socket.emit("registerUser", { name: userName, email: userEmail });
-}
-
-// Load previous messages from localStorage
-let allMessages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-renderMessages();
-
-// Send message
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const message = input.value.trim();
-  if (!message) return;
-
-  const now = new Date();
-  const msgData = {
-    name: userName,
-    email: userEmail,
-    message,
-    sender: "customer",
-    time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    date: now.toLocaleDateString()
-  };
-
-  socket.emit("sendMessage", msgData);
-  allMessages.push(msgData);
-  saveMessages();
-  renderMessages();
-  input.value = "";
-});
-
-// Receive reply
-socket.on("receiveReply", (msg) => {
-  if (msg.email === userEmail) {
-    allMessages.push(msg);
-    saveMessages();
-    renderMessages();
-  }
-});
-
-// Save messages to localStorage
-function saveMessages() {
-  localStorage.setItem("chatMessages", JSON.stringify(allMessages));
-}
-
-// Render all messages with delete buttons
-function renderMessages() {
-  messagesDiv.innerHTML = "";
-  allMessages.forEach((msg, index) => {
-    if (msg.email !== userEmail) return; // show only current user's messages
-
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("message", msg.sender === "admin" ? "admin" : "customer");
-
-    const text = document.createElement("div");
-    text.textContent = msg.message;
-
-    const time = document.createElement("div");
-    time.style.fontSize = "0.75rem";
-    time.style.opacity = "0.7";
-    time.style.marginTop = "4px";
-    time.textContent = `${msg.date || ""} • ${msg.time || ""}`;
-
-    // Delete button
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "×";
-    deleteBtn.style.cssText = `
-      margin-left: 8px;
-      background: transparent;
-      border: none;
-      color: red;
-      font-weight: bold;
-      cursor: pointer;
-    `;
-    deleteBtn.onclick = () => deleteMessage(index);
-
-    text.appendChild(deleteBtn);
-    wrapper.appendChild(text);
-    wrapper.appendChild(time);
-    messagesDiv.appendChild(wrapper);
-  });
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-// Delete message both sides
-function deleteMessage(index) {
-  allMessages.splice(index, 1);
-  saveMessages();
-  renderMessages();
-
-  // Optional: notify server to remove message for admin side
-  socket.emit("deleteMessage", { index, email: userEmail });
-}
-
-// Load past messages from server (optional)
-socket.on("connect", () => {
-  socket.emit("loadMessages");
-});
-
-socket.on("loadMessages", (msgs) => {
-  msgs.forEach(msg => {
-    if (msg.email === userEmail && !allMessages.some(m => m.time === msg.time && m.date === msg.date && m.message === msg.message)) {
-      allMessages.push(msg);
-    }
-  });
-  saveMessages();
-  renderMessages();
-});
-</script>
-
-
-
-</body>
-</html>
->>>>>>> b2b789e (new)
