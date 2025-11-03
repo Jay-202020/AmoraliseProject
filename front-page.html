@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>Amoralise Front Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Roboto+Mono&display=swap" rel="stylesheet"/>
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="data-initializer.js"></script>
+  <style>
+    body {
+      font-family: "Playfair Display", serif;
+      background-image: url("Pictures/bg-front.png");
+      color: #d9c1b0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      user-select: none;
+    }
+    .font-mono-custom {
+      font-family: "Roboto Mono", monospace;
+    }
+    .banner-text span {
+      letter-spacing: 0.3em;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .btn-animate {
+      transition: all 0.3s ease;
+      transform: translateY(0);
+    }
+    .btn-animate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .btn-animate:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .nav-btn {
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover {
+      transform: scale(1.05);
+      text-shadow: 0 0 8px rgba(217, 193, 176, 0.6);
+    }
+    .carousel-btn {
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .carousel-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    .carousel-btn:active {
+      transform: scale(0.95);
+    }
+    .dot-btn {
+      transition: all 0.2s ease;
+    }
+    .dot-btn:hover {
+      transform: scale(1.3);
+    }
+    .category-card {
+      transition: all 0.3s ease;
+    }
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    #carousel-inner img,
+    .category-card img {
+      opacity: 0;
+      transform: scale(0.9);
+      animation: fadeInScale 0.8s ease-out forwards;
+    }
+    #carousel-inner img:nth-child(1) { animation-delay: 0.2s; }
+    #carousel-inner img:nth-child(2) { animation-delay: 0.3s; }
+    #carousel-inner img:nth-child(3) { animation-delay: 0.4s; }
+    #carousel-inner img:nth-child(4) { animation-delay: 0.5s; }
+    #carousel-inner img:nth-child(5) { animation-delay: 0.6s; }
+    #carousel-inner img:nth-child(6) { animation-delay: 0.7s; }
+    .category-card:nth-child(1) img { animation-delay: 0.8s; }
+    .category-card:nth-child(2) img { animation-delay: 0.9s; }
+    .category-card:nth-child(3) img { animation-delay: 1.0s; }
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #3a2416;
+      border: 1px solid #4a3420;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 360px;
+      width: 90%;
+      position: relative;
+      animation: slideIn 0.3s ease-out;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-content .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #d9c1b0;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .modal-content .close-btn:hover {
+      transform: scale(1.2);
+      color: #f0d8c0;
+    }
+    .form-toggle {
+      color: #d9c1b0;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    .form-toggle:hover {
+      color: #f0d8c0;
+    }
+    .error-message {
+      color: #e74c3c;
+      margin-top: 10px;
+      font-size: 12px;
+      text-align: center;
+      display: none;
+    }
+
+    /* Shake animation for incorrect login */
+    .shake {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    /* Loading indicator styles */
+    .login-button.loading {
+      position: relative;
+      color: transparent !important;
+      pointer-events: none;
+    }
+
+    .login-button.loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -8px 0 0 -8px;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #d9c1b0;
+      border-radius: 50%;
+      border-top-color: #7a5a52;
+      animation: spin 0.8s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .form-input {
+      width: 100%;
+      margin-top: 0.25rem;
+      border-radius: 0.25rem;
+      background-color: #d9c1b0;
+      color: #3a2416;
+      font-family: "Roboto Mono", monospace;
+      font-size: 0.75rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      outline: none;
+      --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+      --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+      box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+      --tw-ring-color: #7a5a52;
+    }
+
+    /* Adjusted styles for form elements to be slightly more compact */
+    .modal-content label {
+      font-size: 11px;
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="password"],
+    .modal-content input[type="tel"],
+    .modal-content input[type="email"],
+    .modal-content textarea {
+      font-size: 11px;
+      padding: 6px 10px;
+    }
+
+    .modal-content button[type="submit"] {
+      padding: 8px 16px;
+    }
+
+    /* Google Sign-In Button Styles */
+    .google-signin-btn {
+      background: white;
+      color: #3c4043;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .google-signin-btn:hover {
+      background: #f8f9fa;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .google-signin-btn:active {
+      background: #f1f3f4;
+    }
+
+    .google-signin-btn img {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+    }
+
+    .divider-line {
+      flex-grow: 1;
+      height: 1px;
+      background-color: #a18a85;
+    }
+
+    .divider-text {
+      padding: 0 10px;
+      color: #d9c1b0;
+      font-size: 12px;
+      font-family: "Roboto Mono", monospace;
+    }
+
+    /* Toast notification styles */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      border-radius: 4px;
+      color: white;
+      z-index: 10000;
+      font-family: "Roboto Mono", monospace;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      max-width: 300px;
+    }
+
+    .toast.success {
+      background: #10b981;
+    }
+
+    .toast.error {
+      background: #ef4444;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    /* Google Sign-In Button Styles */
+.google-signin-btn {
+    background: white;
+    color: #3c4043;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+    margin: 10px 0;
+    font-family: "Roboto Mono", monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+.google-signin-btn:hover {
+    background: #f8f9fa;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
+
+.google-signin-btn:active {
+    background: #f1f3f4;
+    transform: translateY(0);
+}
+
+.google-signin-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.3);
+}
+
+.google-signin-btn img {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+}
+
+/* Divider between regular form and Google sign-in */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    position: relative;
+}
+
+.divider-line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #a18a85;
+}
+
+.divider-text {
+    padding: 0 10px;
+    color: #d9c1b0;
+    font-size: 12px;
+    font-family: "Roboto Mono", monospace;
+    background: #3a2416;
+    z-index: 1;
+}
+
+/* Toast notification styles */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 4px;
+    color: white;
+    z-index: 10000;
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    max-width: 300px;
+    transform: translateY(-20px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.success {
+    background: #10b981;
+}
+
+.toast.error {
+    background: #ef4444;
+}
+
+.toast.warning {
+    background: #f59e0b;
+}
+
+.toast i {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+/* Loading state for Google button */
+.google-signin-btn.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.google-signin-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid transparent;
+    border-top: 2px solid #3c4043;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* Google button variants for different contexts */
+.google-signin-btn.outline {
+    background: transparent;
+    border: 1px solid #dadce0;
+    color: #3c4043;
+}
+
+.google-signin-btn.outline:hover {
+    background: #f8f9fa;
+}
+
+.google-signin-btn.dark {
+    background: #3a2416;
+    border: 1px solid #4a3420;
+    color: #d9c1b0;
+}
+
+.google-signin-btn.dark:hover {
+    background: #4a3420;
+}
+
+.google-signin-btn.dark img {
+    filter: brightness(0) invert(1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .google-signin-btn {
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+    
+    .google-signin-btn img {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+    }
+    
+    .divider-text {
+        font-size: 11px;
+        padding: 0 8px;
+    }
+}
+
+/* Animation for button press effect */
+@keyframes button-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.98); }
+    100% { transform: scale(1); }
+}
+
+.google-signin-btn:active {
+    animation: button-press 0.2s ease;
+}
+
+/* Focus styles for accessibility */
+.google-signin-btn:focus-visible {
+    outline: 2px solid #4285f4;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .google-signin-btn {
+        border-width: 2px;
+    }
+    
+    .divider-line {
+        height: 2px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .google-signin-btn {
+        transition: none;
+    }
+    
+    .google-signin-btn:hover {
+        transform: none;
+    }
+    
+    .toast {
+        transition: opacity 0.1s;
+    }
+}
+
+/* 2FA Modal Styles */
+.two-factor-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+}
+
+.two-factor-content {
+    background: #3a2416;
+    border: 1px solid #4a3420;
+    border-radius: 8px;
+    padding: 25px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    animation: slideIn 0.3s ease-out;
+}
+
+.qr-code-container {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    display: inline-block;
+}
+
+.manual-code {
+    background: #2a1a10;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px;
+    word-break: break-all;
+}
+
+.verification-input {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    border: 1px solid #a18a85;
+    border-radius: 4px;
+    background: #d9c1b0;
+    color: #3a2416;
+    font-family: "Roboto Mono", monospace;
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+.verification-input:focus {
+    outline: none;
+    border-color: #7a5a52;
+    box-shadow: 0 0 0 2px rgba(122, 90, 82, 0.3);
+}
+  </style>
+</head>
+<body>
+  <header class="flex items-center justify-between bg-[#3a2416] border-b border-[#4a3420] h-16 px-4 sm:px-6 md:px-10 select-none">
+   <div class="flex items-center space-x-2">
+    <img alt="Amoralise LOGO" class="w-10 h-10" height="40" src="Pictures/Amoraliselogo.png" width="40"/>
+    <div class="text-[#d9c1b0] font-mono-custom text-[10px] leading-none tracking-widest">
+     <h1>AMORALISE</h1>
+    </div>
+   </div>
+   <nav class="hidden md:flex items-center space-x-6 text-[10px] font-mono-custom text-[#d9c1b0]">
+    <a href="about-us.html" class="flex items-center space-x-1 cursor-pointer hover:text-[#f0d8c0] transition-colors nav-btn">
+     <i class="fas fa-info-circle text-[14px]"></i>
+     <span id="aboutUsLink">About Us</span>
+    </a>
+    <a id="loginLink" class="flex items-center space-x-1 cursor-pointer hover:text-[#f0d8c0] transition-colors nav-btn">
+     <i class="fas fa-user text-[14px]"></i>
+     <span>Login</span>
+    </a>
+   </nav>
+   <div class="flex items-center space-x-2 cursor-pointer text-[#d9c1b0] text-xs font-mono-custom select-none nav-btn">
+    <i class="fas fa-globe-americas text-[16px]"></i>
+    <span>EN</span>
+    <i class="fas fa-chevron-down text-[10px]"></i>
+   </div>
+  </header>
+
+  <!-- 2FA Setup Modal -->
+  <div id="twoFactorModal" class="two-factor-modal">
+    <div class="two-factor-content">
+      <h3 class="text-[#d9c1b0] font-serif text-lg mb-4">Set Up Two-Factor Authentication</h3>
+      <p class="text-[#d9c1b0] font-mono-custom text-xs mb-4">Scan this QR code with Google Authenticator app</p>
+      
+      <div class="qr-code-container">
+        <img id="qrCodeImage" src="" alt="QR Code" style="width: 200px; height: 200px;">
+      </div>
+      
+      <p class="text-[#d9c1b0] font-mono-custom text-xs mt-4">Or enter this code manually:</p>
+      <div class="manual-code">
+        <span id="manualCode" class="text-[#3a2416]"></span>
+      </div>
+      
+      <p class="text-[#d9c1b0] font-mono-custom text-xs mt-4">Enter the 6-digit code from Google Authenticator:</p>
+      <input type="text" id="verificationCode" class="verification-input" maxlength="6" placeholder="000000">
+      
+      <div class="flex space-x-3 mt-4">
+        <button id="verify2FABtn" class="flex-1 bg-[#7a5a52] text-[#d9c1b0] font-mono-custom text-xs rounded px-4 py-2 border border-[#a18a85] hover:bg-[#8b6b63] btn-animate">
+          Verify & Complete
+        </button>
+        <button id="skip2FABtn" class="flex-1 bg-[#3a2416] text-[#d9c1b0] font-mono-custom text-xs rounded px-4 py-2 border border-[#a18a85] hover:bg-[#4a3426] btn-animate">
+          Skip for Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="authModal" class="modal">
+   <div class="modal-content">
+    <span class="close-btn">×</span>
+    <div id="loginFormContainer">
+     <h2 class="text-[#d9c1b0] font-serif text-lg text-center mb-6">Login to AmoraLise</h2>
+     <p id="modal-login-error-msg" class="error-message"></p>
+     <form id="loginForm" class="flex flex-col space-y-3">
+       <div>
+        <label for="loginUsername" class="text-[#d9c1b0] font-mono-custom text-xs">Username or Email</label>
+        <input id="loginUsername" type="text" class="form-input" placeholder="Enter username or email" required/>
+       </div>
+       <div>
+        <label for="loginPassword" class="text-[#d9c1b0] font-mono-custom text-xs">Password</label>
+        <input id="loginPassword" type="password" class="form-input" placeholder="Enter password" required/>
+       </div>
+       <button type="submit" id="loginButton" class="bg-[#3a2416] text-[#d9c1b0] font-mono-custom text-xs rounded px-4 py-2 border border-[#a18a85] hover:bg-[#7a5a52] btn-animate login-button">Login</button>
+       
+       <div class="divider">
+         <div class="divider-line"></div>
+         <span class="divider-text">OR</span>
+         <div class="divider-line"></div>
+       </div>
+       
+       <button type="button" id="googleSignIn" class="google-signin-btn">
+         <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+         Sign in with Google
+       </button>
+       
+       <p class="text-center text-[#d9c1b0] font-mono-custom text-xs mt-3"> Don't have an account? <span class="form-toggle" id="showSignup">Sign Up</span></p>
+     </form>
+    </div>
+
+    <div id="signupFormContainer" style="display: none;">
+     <h2 class="text-[#d9c1b0] font-serif text-lg text-center mb-6">Sign Up for AmoraLise</h2>
+     <p id="modal-signup-error-msg" class="error-message"></p>
+     <form id="signupForm" class="flex flex-col space-y-3">
+       <div>
+        <label for="signupFirstname" class="text-[#d9c1b0] font-mono-custom text-xs">First Name</label>
+        <input id="signupFirstname" type="text" class="form-input" placeholder="Enter first name" required/>
+       </div>
+       <div>
+        <label for="signupLastname" class="text-[#d9c1b0] font-mono-custom text-xs">Last Name</label>
+        <input id="signupLastname" type="text" class="form-input" placeholder="Enter last name" required/>
+       </div>
+       <div>
+        <label for="signupPhone" class="text-[#d9c1b0] font-mono-custom text-xs">Phone Number</label>
+        <input id="signupPhone" type="tel" class="form-input" placeholder="Enter phone number" required/>
+       </div>
+       <div>
+        <label for="signupEmail" class="text-[#d9c1b0] font-mono-custom text-xs">Email</label>
+        <input id="signupEmail" type="email" class="form-input" placeholder="Enter your email" required/>
+       </div>
+       <div>
+        <label for="signupAddress" class="text-[#d9c1b0] font-mono-custom text-xs">Address</label>
+        <textarea id="signupAddress" class="form-input" placeholder="Enter full address" required></textarea>
+       </div>
+       <div>
+        <label for="signupUsername" class="text-[#d9c1b0] font-mono-custom text-xs">Username</label>
+        <input id="signupUsername" type="text" class="form-input" placeholder="Create username" required/>
+       </div>
+       <div>
+        <label for="signupPassword" class="text-[#d9c1b0] font-mono-custom text-xs">Password</label>
+        <input id="signupPassword" type="password" class="form-input" placeholder="Create password (min 6 characters)" required/>
+       </div>
+       <div>
+        <label for="signupConfirmPassword" class="text-[#d9c1b0] font-mono-custom text-xs">Confirm Password</label>
+        <input id="signupConfirmPassword" type="password" class="form-input" placeholder="Confirm your password" required/>
+       </div>
+       <button type="submit" class="bg-[#3a2416] text-[#d9c1b0] font-mono-custom text-xs rounded px-4 py-2 border border-[#a18a85] hover:bg-[#7a5a52] btn-animate">Sign Up</button>
+       
+       <div class="divider">
+         <div class="divider-line"></div>
+         <span class="divider-text">OR</span>
+         <div class="divider-line"></div>
+       </div>
+       
+       <button type="button" id="googleSignUp" class="google-signin-btn">
+         <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+         Sign up with Google
+       </button>
+       
+       <p class="text-center text-[#d9c1b0] font-mono-custom text-xs mt-3"> Already have an account? <span class="form-toggle" id="showLogin">Login</span></p>
+     </form>
+    </div>
+   </div>
+  </div>
+
+  <!-- Rest of your HTML content remains the same -->
+  <section class="w-full max-w-7xl mx-auto mt-4 px-4 sm:px-6 md:px-10 relative select-none">
+   <div class="relative">
+    <div class="overflow-hidden rounded-lg" id="carousel">
+     <div class="flex transition-transform duration-500 ease-in-out" id="carousel-inner" style="width: 1120px;">
+      <img alt="1" class="w-[320px] h-[160px] object-cover flex-shrink-0 rounded-l-lg" height="160" src="Pictures/teq.webp" width="320"/>
+      <img alt="2" class="w-[480px] h-[160px] object-cover flex-shrink-0" height="160" src="Pictures/rum.jpg" width="480"/>
+      <img alt="3" class="w-[320px] h-[160px] object-cover flex-shrink-0 rounded-r-lg" height="160" src="https://storage.googleapis.com/a1aa/image/130cea78-6527-46b6-a93d-42b959103a03.jpg" width="320"/>
+      <img alt="4" class="w-[320px] h-[160px] object-cover flex-shrink-0 rounded-r-lg" height="160" src="Pictures/whiskey.webp" width="320"/>
+      <img alt="5" class="w-[320px] h-[160px] object-cover flex-shrink-0 rounded-r-lg" height="160" src="Pictures/wis.jpg" width="320"/>
+      <img alt="4" class="w-[320px] h-[160px] object-cover flex-shrink-0 rounded-l-lg" height="160" src="Pictures/teq.webp" width="320"/>
+      <img alt="4" class="w-[480px] h-[160px] object-cover flex-shrink-0" height="160" src="Pictures/rum.jpg" width="480"/>
+     </div>
+    </div>
+    <button aria-label="Previous" class="absolute top-1/2 left-2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#7a5a52] text-[#d9c1b0] flex items-center justify-center z-10 carousel-btn" id="prevBtn">
+     <i class="fas fa-chevron-left"></i>
+    </button>
+    <button aria-label="Next" class="absolute top-1/2 right-2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#7a5a52] text-[#d9c1b0] flex items-center justify-center z-10 carousel-btn" id="nextBtn">
+     <i class="fas fa-chevron-right"></i>
+    </button>
+   </div>
+   <div aria-label="Carousel navigation dots" class="flex justify-center space-x-1 mt-2 select-none" id="dots">
+    <button aria-label="Slide 1" class="w-3 h-3 rounded-full bg-[#7a5a52] focus:outline-none dot-btn" data-index="0"></button>
+    <button aria-label="Slide 2" class="w-3 h-3 rounded-full bg-[#7a5a52]/50 hover:bg-[#7a5a52] focus:outline-none dot-btn" data-index="1"></button>
+    <button aria-label="Slide 3" class="w-3 h-3 rounded-full bg-[#7a5a52]/50 hover:bg-[#7a5a52] focus:outline-none dot-btn" data-index="2"></button>
+   </div>
+  </section>
+  
+  <div class="bg-[#b98f89] text-[#3a2416] text-[10px] font-mono-custom tracking-widest text-center py-1 mt-2 select-none banner-text">
+   <div class="max-w-7xl mx-auto flex justify-between px-4 sm:px-6 md:px-10" style="font-weight: 600;">
+    <span>至福の一杯を味わいましょう</span>
+    <span>MAG LASING ANG WILLING</span>
+    <span>행복한 한 잔으로 자신을 대接하세요</span>
+   </div>
+  </div>
+  
+  <div class="w-full max-w-7xl mx-auto mt-2 px-4 sm:px-6 md:px-10">
+   <form class="max-w-md mx-auto relative" id="searchForm">
+    <input class="w-full rounded-full bg-[#d9c1b0] text-[#3a2416] placeholder-[#a18a85] font-mono-custom text-xs py-2 pl-10 pr-20 focus:outline-none focus:ring-2 focus:ring-[#7a5a52] transition-all duration-200" placeholder="Search Anything" type="search" id="searchInput" name="q"/>
+    <button class="absolute right-1 top-1/2 -translate-y-1/2 bg-[#3a2416] text-[#d9c1b0] font-mono-custom text-xs rounded-full px-4 py-1 border border-[#a18a85] hover:bg-[#7a5a52] transition-all duration-300 btn-animate" type="submit">Search</button>
+    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#a18a85] text-xs pointer-events-none transition-transform duration-200 group-hover:scale-110"></i>
+   </form>
+  </div>
+  
+  <h2 class="text-center text-[#d9c1b0] font-serif text-lg tracking-widest mt-10 select-none">C A T E G O R I E S</h2>
+  
+  <section class="w-full max-w-7xl mx-auto mt-6 px-4 sm:px-6 md:px-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
+   <div class="relative rounded-lg overflow-hidden cursor-pointer category-card">
+    <img alt="Tequila bottles lined up on bar shelf with warm lighting" class="w-full h-60 object-cover rounded-lg transition-transform duration-300 hover:scale-105" height="240" src="Pictures/alcohol4.jpg" width="320"/>
+    <div class="absolute bottom-2 left-2 text-[#d9c1b0] font-mono-custom text-xs bg-[#3a2416]/70 rounded px-2 py-0.5 select-none transition-all duration-300 group-hover:bg-[#3a2416]">Tequila</div>
+   </div>
+   <div class="relative rounded-lg overflow-hidden cursor-pointer category-card">
+    <img alt="Two glasses of rum with bottle in background on wooden table" class="w-full h-60 object-cover rounded-lg transition-transform duration-300 hover:scale-105" height="240" src="Pictures/alcohol5.jpg" width="320"/>
+    <div class="absolute bottom-2 left-2 text-[#d9c1b0] font-mono-custom text-xs bg-[#3a2416]/70 rounded px-2 py-0.5 select-none transition-all duration-300 group-hover:bg-[#3a2416]">Rum</div>
+   </div>
+   <div class="relative rounded-lg overflow-hidden cursor-pointer category-card">
+    <img alt="Close-up of rum bottle label with wooden background" class="w-full h-60 object-cover rounded-lg transition-transform duration-300 hover:scale-105" height="240" src="Pictures/beer.webp" width="320"/>
+    <div class="absolute bottom-2 left-2 text-[#d9c1b0] font-mono-custom text-xs bg-[#3a2416]/70 rounded px-2 py-0.5 select-none transition-all duration-300 group-hover:bg-[#3a2416]">Beer</div>
+   </div>
+  </section>
+
+  <script>
+    // Google OAuth Configuration
+    // REPLACE THIS WITH YOUR ACTUAL GOOGLE CLIENT ID FROM GOOGLE CLOUD CONSOLE
+  // Google OAuth Configuration
+const GOOGLE_CLIENT_ID = '79718460907-7p8ie4oha5n35htpgjmpsk1j4aib0odl.apps.googleusercontent.com';
+
+    // Google Cloud Database Configuration
+    const GOOGLE_CLOUD_PROJECT_ID = 'your-google-cloud-project-id';
+    const GOOGLE_CLOUD_API_KEY = 'your-google-cloud-api-key';
+
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Initializing Amoralise authentication system...');
+
+      // Toast notification function
+      function showToast(message, type = 'success') {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'toast';
+          toast.className = 'toast';
+          document.body.appendChild(toast);
+        }
+        
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      }
+
+      // Initialize Google Sign-In
+      function initializeGoogleSignIn() {
+        if (typeof google === 'undefined') {
+          console.error('Google Identity Services not loaded');
+          showToast('Google authentication service not available', 'error');
+          return;
+        }
+
+        try {
+          google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleSignIn,
+            auto_select: false,
+            cancel_on_tap_outside: true,
+            context: 'use',
+            ux_mode: 'popup'
+          });
+
+          console.log('Google OAuth initialized successfully');
+
+          // Add click handlers for Google buttons
+          const googleSignInBtn = document.getElementById('googleSignIn');
+          const googleSignUpBtn = document.getElementById('googleSignUp');
+
+          if (googleSignInBtn) {
+            googleSignInBtn.addEventListener('click', function() {
+              triggerGoogleSignIn();
+            });
+          }
+
+          if (googleSignUpBtn) {
+            googleSignUpBtn.addEventListener('click', function() {
+              triggerGoogleSignIn();
+            });
+          }
+
+        } catch (error) {
+          console.error('Error initializing Google Sign-In:', error);
+          showToast('Failed to initialize Google authentication', 'error');
+        }
+      }
+
+      function triggerGoogleSignIn() {
+        try {
+          google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+              // Fallback: render button manually
+              renderGoogleButton();
+            }
+          });
+        } catch (error) {
+          console.error('Error triggering Google Sign-In:', error);
+          showToast('Google sign-in failed. Please try again.', 'error');
+        }
+      }
+
+      function renderGoogleButton() {
+        const googleSignInBtn = document.getElementById('googleSignIn');
+        const googleSignUpBtn = document.getElementById('googleSignUp');
+        
+        if (googleSignInBtn && google.accounts.id.renderButton) {
+          google.accounts.id.renderButton(googleSignInBtn, {
+            theme: 'outline',
+            size: 'large',
+            text: 'signin_with',
+            width: googleSignInBtn.offsetWidth
+          });
+        }
+        
+        if (googleSignUpBtn && google.accounts.id.renderButton) {
+          google.accounts.id.renderButton(googleSignUpBtn, {
+            theme: 'outline',
+            size: 'large',
+            text: 'signup_with',
+            width: googleSignUpBtn.offsetWidth
+          });
+        }
+      }
+
+      // Handle Google Sign-In response
+      function handleGoogleSignIn(response) {
+        console.log('Google Sign-In response received');
+        
+        if (response.credential) {
+          showLoadingState(true);
+          
+          try {
+            const userData = parseJwt(response.credential);
+            console.log('Google user data:', userData);
+            processGoogleUser(userData);
+          } catch (error) {
+            console.error('Error processing Google Sign-In:', error);
+            showToast('Failed to process Google Sign-In. Please try again.', 'error');
+            showLoadingState(false);
+          }
+        } else {
+          console.error('No credential in Google response');
+          showToast('Google Sign-In failed. Please try again.', 'error');
+        }
+      }
+
+      // Parse JWT token from Google
+      function parseJwt(token) {
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+
+          return JSON.parse(jsonPayload);
+        } catch (error) {
+          throw new Error('Invalid JWT token');
+        }
+      }
+
+      // Process Google user data
+      function processGoogleUser(googleUser) {
+        console.log('Processing Google user:', googleUser);
+        
+        const userData = {
+          id: generateUserId(),
+          firstName: googleUser.given_name || 'Google',
+          lastName: googleUser.family_name || 'User',
+          email: googleUser.email,
+          phone: '',
+          address: '',
+          username: generateUsernameFromEmail(googleUser.email),
+          password: generateRandomPassword(),
+          role: 'customer',
+          googleId: googleUser.sub,
+          picture: googleUser.picture,
+          emailVerified: googleUser.email_verified || false,
+          authProvider: 'google',
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString(),
+          twoFactorEnabled: false,
+          twoFactorSecret: null
+        };
+
+        // Save user to Google Cloud Database (simulated)
+        saveUserToGoogleCloud(userData);
+
+        // Also save to localStorage for immediate access
+        saveUserToLocalStorage(userData);
+
+        // Log the user in
+        handleLoginSuccess(userData);
+      }
+
+      // Save user to Google Cloud Database (simulated - you'll need backend for real implementation)
+      function saveUserToGoogleCloud(userData) {
+        console.log('Saving user to Google Cloud Database:', userData.email);
+        
+        // In a real implementation, you would make an API call to your backend
+        // which would save the user to Google Cloud SQL or Firebase Firestore
+        
+        // Example API call (commented out since we don't have backend yet)
+        /*
+        fetch('https://your-backend-domain.com/api/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${GOOGLE_CLOUD_API_KEY}`
+          },
+          body: JSON.stringify({
+            projectId: GOOGLE_CLOUD_PROJECT_ID,
+            user: userData
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('User saved to Google Cloud:', data);
+        })
+        .catch(error => {
+          console.error('Error saving to Google Cloud:', error);
+        });
+        */
+        
+        // For now, we'll simulate success
+        setTimeout(() => {
+          console.log('User data would be saved to Google Cloud Database');
+        }, 500);
+      }
+
+      // Save user to localStorage
+      function saveUserToLocalStorage(userData) {
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const customers = JSON.parse(localStorage.getItem('customers')) || [];
+        
+        // Check if user already exists
+        const existingUserIndex = users.findIndex(user => 
+          user.googleId === userData.googleId || user.email === userData.email
+        );
+        
+        if (existingUserIndex !== -1) {
+          // Update existing user
+          users[existingUserIndex] = { ...users[existingUserIndex], ...userData, lastLogin: new Date().toISOString() };
+          
+          const existingCustomerIndex = customers.findIndex(customer => 
+            customer.googleId === userData.googleId || customer.email === userData.email
+          );
+          if (existingCustomerIndex !== -1) {
+            customers[existingCustomerIndex] = users[existingUserIndex];
+          } else {
+            customers.push(users[existingUserIndex]);
+          }
+        } else {
+          // Add new user
+          users.push(userData);
+          customers.push(userData);
+        }
+        
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('customers', JSON.stringify(customers));
+        localStorage.setItem('googleUsers', JSON.stringify([...JSON.parse(localStorage.getItem('googleUsers') || '[]'), userData]));
+        
+        console.log('User saved to localStorage:', userData.email);
+      }
+
+      // Generate unique user ID
+      function generateUserId() {
+        return 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+      }
+
+      // Generate username from email
+      function generateUsernameFromEmail(email) {
+        return email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '') + '_google';
+      }
+
+      // Generate random password for local storage
+      function generateRandomPassword() {
+        return Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+      }
+
+      // Handle successful login
+      function handleLoginSuccess(user) {
+        showLoadingState(false);
+        
+        console.log('Login successful for user:', user.email);
+        showToast(`Welcome ${user.firstName}! Redirecting...`, 'success');
+
+        // Store user session
+        if (user.role === 'customer') {
+          localStorage.setItem('loggedInCustomer', JSON.stringify(user));
+        } else {
+          localStorage.setItem('currentRole', user.role);
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        }
+
+        localStorage.setItem('lastLogin', new Date().toISOString());
+
+        // Redirect to customer dashboard
+        setTimeout(() => {
+          window.location.href = 'customer-dashboard.html';
+        }, 1500);
+        
+        // Close modal
+        authModal.style.display = 'none';
+      }
+
+      // Show/hide loading state
+      function showLoadingState(show) {
+        const loginButton = document.getElementById('loginButton');
+        const googleButtons = document.querySelectorAll('.google-signin-btn');
+        
+        if (loginButton) {
+          if (show) {
+            loginButton.classList.add('loading');
+            loginButton.disabled = true;
+          } else {
+            loginButton.classList.remove('loading');
+            loginButton.disabled = false;
+          }
+        }
+        
+        googleButtons.forEach(btn => {
+          if (show) {
+            btn.classList.add('loading');
+            btn.disabled = true;
+          } else {
+            btn.classList.remove('loading');
+            btn.disabled = false;
+          }
+        });
+      }
+
+      // Your existing carousel and modal logic (keep all your existing code below)
+      const carouselInner = document.getElementById("carousel-inner");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const dots = document.querySelectorAll("#dots button");
+      const slideWidths = [320, 480, 320];
+      const totalSlides = slideWidths.length;
+      let currentIndex = 0;
+
+      const cumulativeWidths = slideWidths.reduce(
+        (acc, w) => {
+          acc.push(acc[acc.length - 1] + w);
+          return acc;
+        },
+        [0]
+      );
+
+      function updateCarousel() {
+        const translateX = -cumulativeWidths[currentIndex];
+        carouselInner.style.transform = `translateX(${translateX}px)`;
+        dots.forEach((dot, i) => {
+          if (i === currentIndex) {
+            dot.classList.remove("bg-[#7a5a52]/50");
+            dot.classList.add("bg-[#7a5a52]");
+          } else {
+            dot.classList.add("bg-[#7a5a52]/50");
+            dot.classList.remove("bg-[#7a5a52]");
+          }
+        });
+      }
+
+      prevBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+        prevBtn.classList.add("animate-pulse");
+        setTimeout(() => prevBtn.classList.remove("animate-pulse"), 300);
+      });
+
+      nextBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateCarousel();
+        nextBtn.classList.add("animate-pulse");
+        setTimeout(() => nextBtn.classList.remove("animate-pulse"), 300);
+      });
+
+      dots.forEach((dot) => {
+        dot.addEventListener("click", () => {
+          currentIndex = Number(dot.dataset.index);
+          updateCarousel();
+          dot.classList.add("animate-ping");
+          setTimeout(() => dot.classList.remove("animate-ping"), 500);
+        });
+      });
+
+      // Modal Logic
+      const authModal = document.getElementById('authModal');
+      const loginLink = document.getElementById('loginLink');
+      const closeBtn = authModal.querySelector('.close-btn');
+      const loginFormContainer = document.getElementById('loginFormContainer');
+      const signupFormContainer = document.getElementById('signupFormContainer');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const showSignup = document.getElementById('showSignup');
+      const showLogin = document.getElementById('showLogin');
+      const modalLoginErrorMsg = document.getElementById('modal-login-error-msg');
+      const modalSignupErrorMsg = document.getElementById('modal-signup-error-msg');
+      const loginButton = document.getElementById('loginButton');
+
+      // Function to show error message in modal
+      function showModalError(type, message) {
+        if (type === 'login') {
+          modalLoginErrorMsg.textContent = message;
+          modalLoginErrorMsg.style.display = 'block';
+          modalSignupErrorMsg.style.display = 'none';
+        } else if (type === 'signup') {
+          modalSignupErrorMsg.textContent = message;
+          modalSignupErrorMsg.style.display = 'block';
+          modalLoginErrorMsg.style.display = 'none';
+        }
+      }
+
+      // Function to hide error messages in modal
+      function hideModalErrors() {
+        modalLoginErrorMsg.style.display = 'none';
+        modalSignupErrorMsg.style.display = 'none';
+      }
+
+      loginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginFormContainer.style.display = 'block';
+        signupFormContainer.style.display = 'none';
+        authModal.style.display = 'flex';
+        hideModalErrors();
+        loginFormContainer.classList.remove('shake');
+        
+        // Initialize Google Sign-In when modal opens
+        setTimeout(initializeGoogleSignIn, 100);
+      });
+
+      closeBtn.addEventListener('click', () => {
+        authModal.style.display = 'none';
+        loginForm.reset();
+        signupForm.reset();
+        hideModalErrors();
+        loginFormContainer.classList.remove('shake');
+        showLoadingState(false);
+      });
+
+      authModal.addEventListener('click', (e) => {
+        if (e.target === authModal) {
+          authModal.style.display = 'none';
+          loginForm.reset();
+          signupForm.reset();
+          hideModalErrors();
+          loginFormContainer.classList.remove('shake');
+          showLoadingState(false);
+        }
+      });
+
+      showSignup.addEventListener('click', () => {
+        loginFormContainer.style.display = 'none';
+        signupFormContainer.style.display = 'block';
+        loginForm.reset();
+        hideModalErrors();
+        loginFormContainer.classList.remove('shake');
+        
+        // Initialize Google Sign-In when switching to signup
+        setTimeout(initializeGoogleSignIn, 100);
+      });
+
+      showLogin.addEventListener('click', () => {
+        signupFormContainer.style.display = 'none';
+        loginFormContainer.style.display = 'block';
+        signupForm.reset();
+        hideModalErrors();
+      });
+
+      // Remove shake class after animation ends
+      loginFormContainer.addEventListener('animationend', () => {
+        loginFormContainer.classList.remove('shake');
+      });
+
+      // Initialize default staff credentials if they don't exist
+      if (!localStorage.getItem('staffCredentials')) {
+        const defaultStaff = [
+          {
+            username: 'admin123',
+            password: 'lisinglasing',
+            role: 'admin',
+            dashboard: 'admin-dashboard.html'
+          },
+          {
+            username: 'audit123',
+            password: 'lisinglasing',
+            role: 'audit',
+            dashboard: 'Audit.html'
+          },
+          {
+            username: 'supervisor123',
+            password: 'lisinglasing',
+            role: 'supervisor',
+            dashboard: 'supervisor-dashboard.html'
+          },
+          {
+            username: 'cashier123',
+            password: 'lisinglasing',
+            role: 'cashier',
+            dashboard: 'cashier-dashboard.html'
+          }
+        ];
+        localStorage.setItem('staffCredentials', JSON.stringify(defaultStaff));
+      }
+
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        showLoadingState(true);
+
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+
+        hideModalErrors();
+        loginFormContainer.classList.remove('shake');
+
+        // Check staff credentials first
+        const staffCredentials = JSON.parse(localStorage.getItem('staffCredentials')) || [];
+        const staff = staffCredentials.find(user => {
+          return user.username === username && user.password === password;
+        });
+
+        if (staff) {
+          localStorage.setItem('currentRole', staff.role);
+          setTimeout(() => {
+            showLoadingState(false);
+            window.location.href = staff.dashboard;
+          }, 500);
+          return;
+        }
+
+        // Check regular users
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const customers = JSON.parse(localStorage.getItem('customers')) || [];
+        const allUsers = [...users, ...customers];
+
+        const user = allUsers.find(user => {
+          return user.username === username && user.password === password;
+        });
+
+        if (user) {
+          if (user.role === 'customer') {
+            localStorage.setItem('loggedInCustomer', JSON.stringify(user));
+            setTimeout(() => {
+              showLoadingState(false);
+              window.location.href = 'customer-dashboard.html';
+            }, 500);
+          } else {
+            localStorage.setItem('currentRole', user.role);
+            let dashboard;
+            switch(user.role) {
+              case 'admin': dashboard = 'admin-dashboard.html'; break;
+              case 'audit': dashboard = 'audit.html'; break;
+              case 'supervisor': dashboard = 'supervisor-dashboard.html'; break;
+              case 'cashier': dashboard = 'cashier-dashboard.html'; break;
+              default: dashboard = 'front-page.html';
+            }
+            setTimeout(() => {
+              showLoadingState(false);
+              window.location.href = dashboard;
+            }, 500);
+          }
+          return;
+        }
+
+        // If neither matches
+        showLoadingState(false);
+        showModalError('login', 'Invalid username or password');
+        document.getElementById('loginPassword').value = '';
+        loginFormContainer.classList.add('shake');
+      });
+
+      // Registration Logic
+      signupForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Get all form values
+        const userData = {
+          firstName: document.getElementById('signupFirstname').value.trim(),
+          lastName: document.getElementById('signupLastname').value.trim(),
+          phone: document.getElementById('signupPhone').value.trim(),
+          email: document.getElementById('signupEmail').value.trim(),
+          address: document.getElementById('signupAddress').value.trim(),
+          username: document.getElementById('signupUsername').value.trim(),
+          password: document.getElementById('signupPassword').value,
+          confirmPassword: document.getElementById('signupConfirmPassword').value,
+          role: 'customer',
+          createdAt: new Date().toISOString(),
+          authProvider: 'traditional'
+        };
+
+        hideModalErrors();
+
+        // Validation
+        if (userData.password !== userData.confirmPassword) {
+          showModalError('signup', 'Passwords do not match!');
+          return;
+        }
+
+        if (userData.password.length < 6) {
+          showModalError('signup', 'Password must be at least 6 characters!');
+          return;
+        }
+
+        // Basic email and phone validation
+        function validateEmail(email) {
+          const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return re.test(email);
+        }
+
+        function validatePhone(phone) {
+          const re = /^[0-9]{10,15}$/;
+          return re.test(phone);
+        }
+
+        if (!validateEmail(userData.email)) {
+          showModalError('signup', 'Please enter a valid email address!');
+          return;
+        }
+
+        if (!validatePhone(userData.phone)) {
+          showModalError('signup', 'Please enter a valid phone number!');
+          return;
+        }
+
+        // Get existing data
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const customers = JSON.parse(localStorage.getItem('customers')) || [];
+
+        // Check if username already exists
+        if (users.some(user => user.username === userData.username) ||
+          customers.some(customer => customer.username === userData.username)) {
+          showModalError('signup', 'Username already exists!');
+          return;
+        }
+
+        // Check if email already exists
+        if (users.some(user => user.email === userData.email) ||
+          customers.some(customer => customer.email === userData.email)) {
+          showModalError('signup', 'Email address already registered!');
+          return;
+        }
+
+        // Remove confirmPassword before saving
+        delete userData.confirmPassword;
+
+        // Add ID
+        userData.id = generateUserId();
+
+        // Add to both storage locations for compatibility
+        users.push(userData);
+        customers.push(userData);
+
+        // Save to localStorage
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('customers', JSON.stringify(customers));
+
+        // Show success message and switch to login form
+        showToast('Registration successful! Please login.', 'success');
+        signupForm.reset();
+        loginFormContainer.style.display = 'block';
+        signupFormContainer.style.display = 'none';
+        hideModalErrors();
+      });
+
+      // Rest of your existing code (search, categories, language, etc.)
+      document.querySelector('a[href="about-us.html"]').addEventListener('click', (e) => {
+        console.log('About Us clicked');
+      });
+
+      const searchForm = document.getElementById('searchForm');
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const searchInput = document.getElementById('searchInput');
+        const query = searchInput.value.trim();
+
+        if (query) {
+          const searchBtn = this.querySelector('button[type="submit"]');
+          searchBtn.classList.add('animate-bounce');
+          setTimeout(() => {
+            searchBtn.classList.remove('animate-bounce');
+            window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}+site:lisinglasing.com`;
+          }, 500);
+        }
+      });
+
+      document.querySelectorAll('.category-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.querySelector('img').classList.add('scale-105');
+          card.querySelector('div').classList.add('bg-[#3a2416]');
+        });
+        card.addEventListener('mouseleave', () => {
+          card.querySelector('img').classList.remove('scale-105');
+          card.querySelector('div').classList.remove('bg-[#3a2416]');
+        });
+      });
+
+      updateCarousel();
+
+      // Language selector code (unchanged)
+      const languageSelector = document.querySelector('.flex.items-center.space-x-2.cursor-pointer');
+      const languageOptions = document.createElement('div');
+      languageOptions.className = 'absolute top-full right-0 mt-2 w-32 bg-[#3a2416] border border-[#4a3420] rounded-md shadow-lg z-20 hidden';
+      languageOptions.innerHTML = `
+        <div class="py-1">
+          <div class="px-4 py-2 text-xs text-[#d9c1b0] hover:bg-[#4a3420] cursor-pointer" data-lang="en">English</div>
+          <div class="px-4 py-2 text-xs text-[#d9c1b0] hover:bg-[#4a3420] cursor-pointer" data-lang="fil">Filipino</div>
+          <div class="px-4 py-2 text-xs text-[#d9c1b0] hover:bg-[#4a3420] cursor-pointer" data-lang="ko">한국어 (Korean)</div>
+          <div class="px-4 py-2 text-xs text-[#d9c1b0] hover:bg-[#4a3420] cursor-pointer" data-lang="ja">日本語 (Japanese)</div>
+        </div>
+      `;
+
+      languageSelector.parentNode.appendChild(languageOptions);
+      languageSelector.parentNode.style.position = 'relative';
+
+      languageSelector.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = languageOptions.classList.contains('hidden');
+        if (isHidden) {
+          languageOptions.classList.remove('hidden');
+        } else {
+          languageOptions.classList.add('hidden');
+        }
+      });
+
+      document.addEventListener('click', () => {
+        languageOptions.classList.add('hidden');
+      });
+
+      // Auto-slide logic
+      let autoSlideInterval;
+
+      function startAutoSlide() {
+        autoSlideInterval = setInterval(() => {
+          currentIndex = (currentIndex + 1) % totalSlides;
+          updateCarousel();
+        }, 3000);
+      }
+
+      function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+      }
+
+      // Start auto-slide when page loads
+      startAutoSlide();
+
+      // Pause auto-slide when hovering carousel
+      document.getElementById("carousel").addEventListener("mouseenter", stopAutoSlide);
+      document.getElementById("carousel").addEventListener("mouseleave", startAutoSlide);
+
+      console.log('Amoralise authentication system initialized successfully');
+
+    }); // End DOMContentLoaded wrapper
+  </script>
+</body>
+</html>

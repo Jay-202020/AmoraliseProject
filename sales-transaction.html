@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier Payment Processing</title>
+    <style>
+        :root {
+            --primary-dark: #1a1a2e;
+            --primary-light: #16213e;
+            --accent-gold: #d4af37;
+            --accent-gold-light: #e6c872;
+            --accent-light: #e6d5b8;
+            --text-light: #f1f1f1;
+            --text-dark: #333;
+            --gradient-bg: linear-gradient(135deg, #f9f5f0 0%, #f0ede5 100%);
+            --shadow: 0 4px 20px rgba(0,0,0,0.15);
+            --transition: all 0.3s ease;
+            --chart-bg: rgba(255, 255, 255, 0.95);
+            --chart-grid: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--gradient-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: var(--chart-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-dark), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .back-btn, .logout-btn {
+            background: linear-gradient(45deg, var(--primary-light), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .back-btn:hover, .logout-btn:hover {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .section {
+            background: var(--chart-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: none;
+            transition: transform 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-dark);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent-gold);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--accent-gold);
+        }
+
+        /* Orders Table */
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .orders-table th {
+            background: linear-gradient(45deg, var(--primary-light), var(--primary-dark));
+            color: var(--text-light);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .orders-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--chart-grid);
+        }
+
+        .orders-table tr:hover {
+            background: var(--accent-light);
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(45deg, var(--accent-gold), var(--accent-gold-light));
+            color: var(--primary-dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            color: var(--accent-gold);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+        }
+
+        /* Payment Display */
+        .payment-display {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--accent-light);
+        }
+
+        .order-details {
+            background: var(--primary-light);
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .amount-section {
+            margin: 20px 0;
+        }
+
+        .amount-section label {
+            font-weight: 600;
+            color: var(--primary-dark);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #payment-input {
+            font-size: 1.8rem;
+            font-weight: bold;
+            width: 100%;
+            padding: 15px;
+            border: 3px solid var(--accent-gold);
+            border-radius: 8px;
+            background: var(--accent-light);
+            color: var(--primary-dark);
+            text-align: center;
+        }
+
+        /* Numpad */
+        .numpad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .numpad-btn {
+            background: linear-gradient(45deg, var(--primary-light), var(--primary-dark));
+            color: var(--text-light);
+            border: none;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .numpad-btn:hover {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .complete-btn {
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary-light));
+            color: var(--text-light);
+            border: none;
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            grid-column: 1 / -1;
+            font-weight: 600;
+        }
+
+        .complete-btn:hover {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Selected Products */
+        #selected-products {
+            min-height: 120px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid var(--accent-light);
+            box-shadow: var(--shadow);
+        }
+
+        .product-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--chart-grid);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .product-price {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 20px 25px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            max-width: 400px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+        }
+
+        .toast.error {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .header-buttons {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 20px;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .numpad-btn {
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+
+            #payment-input {
+                font-size: 1.5rem;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .orders-table th,
+            .orders-table td {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .numpad-btn {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .complete-btn {
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">Cashier Pro</div>
+            <div class="header-buttons">
+                <button class="back-btn" onclick="window.history.back()">
+                    ← Back
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    🚪 Logout
+                </button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Approved Orders Section -->
+            <section class="section">
+                <h2 class="section-title">
+                    💳 Approved Orders
+                </h2>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-body">
+                        <!-- Orders will be loaded here -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Payment Processing Section -->
+            <section class="section">
+                <h2 class="section-title">
+                    💰 Process Payment
+                </h2>
+                
+                <div class="payment-display">
+                    <div class="order-details" id="order-details">
+                        <p><strong>No order selected</strong></p>
+                        <p>Please select an order from the left</p>
+                    </div>
+                    
+                    <div id="selected-products">
+                        <p style="font-weight: 600; color: var(--primary-dark); margin-bottom: 15px;">🛒 Selected Products</p>
+                        <div class="empty-state">
+                            <i>📦</i>
+                            <p>No products selected</p>
+                        </div>
+                    </div>
+
+                    <div class="amount-section">
+                        <label>💰 Amount Paid:</label>
+                        <input type="text" id="payment-input" readonly value="0.00">
+                    </div>
+                </div>
+
+                <!-- Numpad -->
+                <div class="numpad">
+                    <button class="numpad-btn" data-value="1">1</button>
+                    <button class="numpad-btn" data-value="2">2</button>
+                    <button class="numpad-btn" data-value="3">3</button>
+                    <button class="numpad-btn" data-value="4">4</button>
+                    <button class="numpad-btn" data-value="5">5</button>
+                    <button class="numpad-btn" data-value="6">6</button>
+                    <button class="numpad-btn" data-value="7">7</button>
+                    <button class="numpad-btn" data-value="8">8</button>
+                    <button class="numpad-btn" data-value="9">9</button>
+                    <button class="numpad-btn" data-value="00">00</button>
+                    <button class="numpad-btn" data-value="0">0</button>
+                    <button class="numpad-btn" data-value=".">.</button>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn" id="clear-btn">🗑️ Clear</button>
+                    <button class="btn btn-secondary" id="delete-btn">⌫ Delete</button>
+                </div>
+
+                <button class="complete-btn" id="complete-payment">
+                    ✅ Complete Payment
+                </button>
+            </section>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Toast notification function
+        function showToast(message, type = "success") {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Numpad functionality
+        document.querySelectorAll('.numpad-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                handleNumpadInput(value);
+            });
+        });
+
+        function handleNumpadInput(value) {
+            const paymentInput = document.getElementById('payment-input');
+            let currentValue = paymentInput.value.replace(/\.00$/, '');
+            
+            if (value === '.') {
+                if (!currentValue.includes('.')) {
+                    currentValue += '.';
+                }
+            } else if (value === '00') {
+                currentValue += '00';
+            } else {
+                if (currentValue === '0.00' || currentValue === '0') {
+                    currentValue = value;
+                } else {
+                    currentValue += value;
+                }
+            }
+            
+            // Ensure proper decimal format
+            if (currentValue.includes('.')) {
+                const parts = currentValue.split('.');
+                if (parts[1].length > 2) {
+                    parts[1] = parts[1].substring(0, 2);
+                }
+                currentValue = parts[0] + '.' + parts[1];
+            }
+            
+            paymentInput.value = currentValue;
+        }
+
+        // Clear and Delete buttons
+        document.getElementById('clear-btn').addEventListener('click', function() {
+            document.getElementById('payment-input').value = '0.00';
+        });
+
+        document.getElementById('delete-btn').addEventListener('click', function() {
+            const paymentInput = document.getElementById('payment-input');
+            let value = paymentInput.value;
+            if (value.length > 1) {
+                value = value.slice(0, -1);
+                if (value === '' || value === '0') value = '0.00';
+                paymentInput.value = value;
+            } else {
+                paymentInput.value = '0.00';
+            }
+        });
+
+        // Complete Payment
+        document.getElementById('complete-payment').addEventListener('click', function() {
+            completePayment();
+        });
+
+        // Load and display orders
+        function loadOrders() {
+            const ordersBody = document.getElementById('orders-body');
+            ordersBody.innerHTML = '';
+
+            try {
+                // Get orders from localStorage
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                const cashierQueue = JSON.parse(localStorage.getItem('cashierQueue')) || [];
+                
+                // Filter orders that need payment processing
+                const pendingOrders = cashierQueue.filter(order => 
+                    (order.status === "pending_payment" || order.status === "approved") && 
+                    !order.cashierProcessed
+                );
+
+                if (pendingOrders.length === 0) {
+                    ordersBody.innerHTML = `
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <i>📋</i>
+                                    <p>No orders pending payment processing</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                // Display each order
+                pendingOrders.forEach(order => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${order.id}</strong></td>
+                        <td>${order.customerName || 'Walk-in Customer'}</td>
+                        <td style="color: var(--accent-gold); font-weight: 700;">₱${order.total.toFixed(2)}</td>
+                        <td><button class="btn" onclick="selectOrder('${order.id}')">Select</button></td>
+                    `;
+                    ordersBody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                showToast('Error loading orders', 'error');
+            }
+        }
+
+        let selectedOrder = null;
+
+        // Select order for payment
+        function selectOrder(orderId) {
+            try {
+                const cashierQueue = JSON.parse(localStorage.getItem('cashierQueue')) || [];
+                selectedOrder = cashierQueue.find(order => order.id === orderId && !order.cashierProcessed);
+
+                if (!selectedOrder) {
+                    showToast('Order not found or already processed', 'error');
+                    return;
+                }
+
+                // Update UI with order details
+                document.getElementById('order-details').innerHTML = `
+                    <p><strong>Order #${selectedOrder.id}</strong></p>
+                    <p>Customer: ${selectedOrder.customerName || 'Walk-in Customer'}</p>
+                    <p style="color: var(--accent-gold); font-weight: 700; font-size: 1.2rem;">Total: ₱${selectedOrder.total.toFixed(2)}</p>
+                `;
+
+                // Update selected products
+                const productsContainer = document.getElementById('selected-products');
+                productsContainer.innerHTML = '<p style="font-weight: 600; color: var(--primary-dark); margin-bottom: 15px;">🛒 Selected Products</p>';
+                
+                if (selectedOrder.items && selectedOrder.items.length > 0) {
+                    selectedOrder.items.forEach(item => {
+                        const productDiv = document.createElement('div');
+                        productDiv.className = 'product-item';
+                        productDiv.innerHTML = `
+                            <span class="product-name">${item.name} x ${item.quantity}</span>
+                            <span class="product-price">₱${(item.price * item.quantity).toFixed(2)}</span>
+                        `;
+                        productsContainer.appendChild(productDiv);
+                    });
+                } else {
+                    productsContainer.innerHTML += `
+                        <div class="empty-state">
+                            <i>📦</i>
+                            <p>No products in this order</p>
+                        </div>
+                    `;
+                }
+
+                // Reset payment input
+                document.getElementById('payment-input').value = '0.00';
+                
+                showToast(`Order ${orderId} selected for payment`);
+
+            } catch (error) {
+                console.error('Error selecting order:', error);
+                showToast('Error selecting order', 'error');
+            }
+        }
+
+        // Inventory deduction function
+        function updateInventoryForCompletedOrder(order) {
+            try {
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                
+                order.items.forEach(orderItem => {
+                    const productIndex = products.findIndex(p => p.id === orderItem.id);
+                    
+                    if (productIndex !== -1) {
+                        // Deduct the quantity from inventory
+                        products[productIndex].quantity -= orderItem.quantity;
+                        
+                        // Ensure quantity doesn't go below 0
+                        if (products[productIndex].quantity < 0) {
+                            products[productIndex].quantity = 0;
+                        }
+                        
+                        // Update low stock status
+                        if (products[productIndex].quantity <= products[productIndex].lowStockThreshold) {
+                            products[productIndex].lowStock = true;
+                        } else {
+                            products[productIndex].lowStock = false;
+                        }
+                        
+                        console.log(`Deducted ${orderItem.quantity} ${orderItem.name} from inventory. Remaining: ${products[productIndex].quantity}`);
+                    } else {
+                        console.warn(`Product ${orderItem.name} not found in inventory`);
+                    }
+                });
+                
+                // Save updated products back to localStorage
+                localStorage.setItem('products', JSON.stringify(products));
+                return true;
+            } catch (error) {
+                console.error('Error updating inventory:', error);
+                return false;
+            }
+        }
+
+        // UPDATED: Complete payment function with review system integration
+        function completePayment() {
+            if (!selectedOrder) {
+                showToast('Please select an order to process', 'error');
+                return;
+            }
+
+            const paymentAmount = parseFloat(document.getElementById('payment-input').value) || 0;
+            
+            if (paymentAmount <= 0) {
+                showToast('Please enter a valid payment amount', 'error');
+                return;
+            }
+
+            if (paymentAmount < selectedOrder.total) {
+                showToast('Payment amount must be at least the order total', 'error');
+                return;
+            }
+
+            try {
+                // Update inventory first
+                if (!updateInventoryForCompletedOrder(selectedOrder)) {
+                    showToast('Error updating inventory', 'error');
+                    return;
+                }
+
+                // Update cashier queue and orders
+                const cashierQueue = JSON.parse(localStorage.getItem('cashierQueue')) || [];
+                const orderIndex = cashierQueue.findIndex(order => order.id === selectedOrder.id);
+                
+                if (orderIndex !== -1) {
+                    cashierQueue[orderIndex].cashierProcessed = true;
+                    cashierQueue[orderIndex].paymentStatus = 'completed';
+                    cashierQueue[orderIndex].completedPaymentTime = new Date().toISOString();
+                    cashierQueue[orderIndex].paymentReceived = paymentAmount;
+                    cashierQueue[orderIndex].changeGiven = paymentAmount - selectedOrder.total;
+                    cashierQueue[orderIndex].status = 'completed';
+                    cashierQueue[orderIndex].canReview = true; // NEW: Enable review capability
+                    
+                    localStorage.setItem('cashierQueue', JSON.stringify(cashierQueue));
+                }
+
+                // Update orders
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                const mainOrderIndex = orders.findIndex(order => order.id === selectedOrder.id);
+                
+                if (mainOrderIndex !== -1) {
+                    orders[mainOrderIndex].paymentStatus = 'completed';
+                    orders[mainOrderIndex].status = 'completed';
+                    orders[mainOrderIndex].canReview = true; // NEW: Enable review capability
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                }
+
+                // NEW: Initialize product reviews if not exists
+                let productReviews = JSON.parse(localStorage.getItem('productReviews')) || [];
+                localStorage.setItem('productReviews', JSON.stringify(productReviews));
+
+                // Add to audit log
+                let auditLog = JSON.parse(localStorage.getItem('auditLog')) || [];
+                auditLog.push({
+                    timestamp: new Date().toISOString(),
+                    orderId: selectedOrder.id,
+                    customerId: selectedOrder.customerId,
+                    customerName: selectedOrder.customerName,
+                    items: selectedOrder.items.map(item => `${item.name} x${item.quantity}`).join(', '),
+                    total: selectedOrder.total,
+                    totalItems: selectedOrder.items.reduce((sum, item) => sum + item.quantity, 0),
+                    paymentReceived: paymentAmount,
+                    changeGiven: paymentAmount - selectedOrder.total,
+                    action: 'payment_completed'
+                });
+                localStorage.setItem('auditLog', JSON.stringify(auditLog));
+
+                // Show success message with review information
+                const change = paymentAmount - selectedOrder.total;
+                showToast(`Payment completed! Change: ₱${change.toFixed(2)} - Customer can now review products`);
+
+                // Reset UI
+                setTimeout(() => {
+                    selectedOrder = null;
+                    document.getElementById('order-details').innerHTML = `
+                        <p><strong>No order selected</strong></p>
+                        <p>Please select an order from the left</p>
+                    `;
+                    document.getElementById('selected-products').innerHTML = `
+                        <p style="font-weight: 600; color: var(--primary-dark); margin-bottom: 15px;">🛒 Selected Products</p>
+                        <div class="empty-state">
+                            <i>📦</i>
+                            <p>No products selected</p>
+                        </div>
+                    `;
+                    document.getElementById('payment-input').value = '0.00';
+                    loadOrders();
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error processing payment:', error);
+                showToast('Failed to process payment', 'error');
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function(e) {
+            if (e.key >= '0' && e.key <= '9') {
+                handleNumpadInput(e.key);
+            } else if (e.key === '.') {
+                handleNumpadInput('.');
+            } else if (e.key === 'Backspace') {
+                document.getElementById('delete-btn').click();
+            } else if (e.key === 'Enter') {
+                document.getElementById('complete-payment').click();
+            } else if (e.key === 'Delete') {
+                document.getElementById('clear-btn').click();
+            }
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrders();
+            showToast('Cashier system loaded successfully');
+        });
+    </script>
+</body>
+</html>
